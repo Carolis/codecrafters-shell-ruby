@@ -14,10 +14,12 @@ until shell.end
   $stdout.write("$ ")
   unless shell.invalid_command == false
     shell.command = gets.chomp.split(" ")
-    if shell.command != []
+  end
+  if shell.command[0] == "exit"
+    exit(0)
+  elsif shell.command != []
       puts "#{shell.command[0]}: command not found"
-    else
+  else
       shell.end = true
-    end
   end
 end
