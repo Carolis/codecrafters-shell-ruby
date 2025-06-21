@@ -1,25 +1,19 @@
 class MyShell
-  attr_reader :invalid_command
-  attr_accessor :command, :args, :end
-  def initialize
-    @command, *args = nil
-    @invalid_command = true
-    @end = false
+  def run
+    until @end
+      $stdout.write("$ ")
+      @command, *@args = gets.chomp.split(" ")
+      next if @command.nil?
+      case @command
+      when "exit"
+        exit_code = @args.first.to_i || 0
+        exit(exit_code)
+      else
+        puts "#{@command}: command not found" unless @command.empty?
+      end
+    end
   end
 end
 
 shell = MyShell.new
-
-until shell.end
-  $stdout.write("$ ")
-  unless shell.invalid_command == false
-    shell.command = gets.chomp.split(" ")
-  end
-  if shell.command[0] == "exit"
-    exit(0)
-  elsif shell.command != []
-      puts "#{shell.command[0]}: command not found"
-  else
-      shell.end = true
-  end
-end
+shell.run
