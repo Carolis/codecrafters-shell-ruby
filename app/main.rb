@@ -8,6 +8,8 @@ class MyShell
       when "exit"
         exit_code = @args.first.to_i || 0
         exit(exit_code)
+      when "echo"
+        puts @args.join(' ')
       else
         puts "#{@command}: command not found"
       end
