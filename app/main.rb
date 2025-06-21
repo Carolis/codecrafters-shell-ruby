@@ -9,7 +9,7 @@ class MyShell
         exit_code = @args.first.to_i || 0
         exit(exit_code)
       else
-        puts "#{@command}: command not found" unless @command.empty?
+        puts "#{@command}: command not found"
       end
     end
   end
