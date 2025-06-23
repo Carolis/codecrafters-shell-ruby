@@ -1,15 +1,35 @@
 class MyShell
+  def initialize
+    @end = false
+
+    check_builtin = ->(method_name) do
+      if @functions.key?(method_name.to_sym)
+        puts "#{method_name} is a shell builtin"
+      else
+        puts "#{method_name}: not found"
+      end
+    end
+
+    @functions = {
+      type: ->(args) { check_builtin.call(args.first) },
+      echo: ->(args) { puts args.join(' ') },
+      exit: -> { @end = true }
+    }
+  end
+
   def run
     until @end
-      $stdout.write("$ ")
-      @command, *@args = gets.chomp.split(" ")
+      print '$ '
+      input = gets
+      break if input.nil?
+
+      @command, *@args = input.chomp.split(' ')
       next if @command.nil?
-      case @command
-      when "exit"
-        exit_code = @args.first.to_i || 0
-        exit(exit_code)
-      when "echo"
-        puts @args.join(' ')
+
+      func = @functions[@command.to_sym]
+
+      if func
+        func.call(@args)
       else
         puts "#{@command}: command not found"
       end
