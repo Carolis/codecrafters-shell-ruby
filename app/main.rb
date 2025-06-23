@@ -13,7 +13,7 @@ class MyShell
     @functions = {
       type: ->(args) { check_builtin.call(args.first) },
       echo: ->(args) { puts args.join(' ') },
-      exit: -> { @end = true }
+      exit: ->(_args) { @end = true }
     }
   end
 
